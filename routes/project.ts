@@ -16,6 +16,16 @@ router.get("/all", async (req, res) => {
     serverError(res, "Error happened while fetching all the projects", error);
   }
 });
+router.get("/:slug", async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const project = await Project.findOne({ slug });
+    success(res, { project });
+  } catch (error) {
+    serverError(res, "Error happened while fetching all the projects", error);
+  }
+});
 
 router.post("/", async (req, res): Promise<void> => {
   try {
@@ -83,7 +93,7 @@ router.put("/", async (req, res): Promise<void> => {
         tags,
         thumbnail,
       },
-      { new: true }
+      { new: true },
     );
     success(res, { project });
   } catch (error) {

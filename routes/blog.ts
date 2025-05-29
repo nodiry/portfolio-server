@@ -17,6 +17,15 @@ router.get("/all", async (req, res) => {
   }
 });
 
+router.get("/:slug", async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const blog = await Blog.findOne({ slug });
+    success(res, { blog });
+  } catch (error) {
+    serverError(res, "Error happened while fetching all the blogs", error);
+  }
+});
 router.post("/", async (req, res): Promise<void> => {
   try {
     const { title, slug, description, tags, content, thumbnail, author, key } =
@@ -67,7 +76,7 @@ router.put("/", async (req, res): Promise<void> => {
         thumbnail,
         author,
       },
-      { new: true }
+      { new: true },
     );
     success(res, { blog });
   } catch (error) {
